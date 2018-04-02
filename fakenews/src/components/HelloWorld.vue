@@ -13,7 +13,7 @@
               v-model="url"
           ></v-text-field>
         </v-flex>
-        <v-btn color="info">Go</v-btn>
+        <v-btn normal>Go!</v-btn>
       </v-layout>
       <p>URL is: {{ url }}</p>
     </v-container>
