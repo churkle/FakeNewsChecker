@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 flask = "*"
+pandas = "*"
+sklearn = "*"
+scipy = "*"
+flask-cors = "*"
 
 [dev-packages]
 

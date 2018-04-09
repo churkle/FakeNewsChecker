@@ -13,20 +13,31 @@
               v-model="url"
           ></v-text-field>
         </v-flex>
-        <v-btn normal>Go!</v-btn>
+        <v-btn v-on:click="getResult()" normal>Go!</v-btn>
       </v-layout>
-      <p>URL is: {{ url }}</p>
+      <p>{{ url }} is: {{ result }}</p>
     </v-container>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
       msg: 'Fake News Checker',
-      url: ''
+      url: '',
+      result: ''
+    }
+  },
+  methods: {
+    getResult () {
+      axios.get('http://0.0.0.0:5000/checknews')
+        .then((data) => {
+          this.result = data.data
+        })
     }
   }
 }
