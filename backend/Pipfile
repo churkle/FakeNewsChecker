@@ -9,6 +9,7 @@ pandas = "*"
 sklearn = "*"
 scipy = "*"
 flask-cors = "*"
+requests = "*"
 
 [dev-packages]
 
