@@ -39,7 +39,7 @@ export default {
   methods: {
     getResult () {
       this.result = 'Checking... please wait'
-      axios.post('http://0.0.0.0:5000/checktext', {
+      axios.post('http://34.229.13.101:5000/checktext', {
         text: this.article
       })
         .then((data) => {

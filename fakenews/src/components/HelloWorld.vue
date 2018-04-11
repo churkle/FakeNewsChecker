@@ -38,7 +38,7 @@ export default {
   methods: {
     getResult () {
       this.result = 'Checking... please wait'
-      axios.get('http://0.0.0.0:5000/checknews?article=' + this.url)
+      axios.get('http://34.229.13.101:5000/checknews?article=' + this.url)
         .then((data) => {
           this.result = `${this.url} is: ${data.data['message'][0]}`
         })
