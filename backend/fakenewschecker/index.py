@@ -24,6 +24,20 @@ def strip_tags(html):
     s.feed(html)
     return s.get_data()
 
+def run_model(text):
+    f1 = open("../tfidf_vectorizer.pckl","rb")
+    tfidf_vectorizer = pickle.load(f1)
+    v = tfidf_vectorizer.transform([text]) #vectorized string
+    print(v)
+
+    f2 = open("../PAC_model.pckl","rb")
+    model = pickle.load(f2)
+    pred = model.predict(v)
+    f1.close()
+    f2.close()
+
+    return pred
+
 @app.route('/checknews/', methods=['GET'])
 @cross_origin()
 def fake_news_checker():
@@ -33,18 +47,23 @@ def fake_news_checker():
         return jsonify({'message': 'No input data provided'}), 400
 
     body = strip_tags(requests.get(url).text).replace('\n', '')
+    pred = run_model(body)
 
-    f1 = open("../tfidf_vectorizer.pckl","rb")
-    tfidf_vectorizer = pickle.load(f1)
-    v = tfidf_vectorizer.transform([body]) #vectorized string
-    print(v)
+    response = jsonify({'status': 'success',
+                    'message': pred.tolist()})
+    response.status_code = 200
+    return response
 
-    f2 = open("../PAC_model.pckl","rb")
-    model = pickle.load(f2)
-    pred = model.predict(v)
-    print(pred)
-    f1.close()
-    f2.close()
+@app.route('/checktext', methods=['POST'])
+@cross_origin()
+def text_checker():
+
+    text = request.json['text']
+    
+    if not text:
+        return jsonify({'message': 'No input data provided'}), 400
+
+    pred = run_model(text)
 
     response = jsonify({'status': 'success',
                     'message': pred.tolist()})
