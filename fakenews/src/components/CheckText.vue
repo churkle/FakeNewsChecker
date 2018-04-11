@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="checktext">
     <h1>{{ msg }}</h1>
     <v-container fluid>
       <v-layout row>
@@ -14,16 +14,6 @@
           ></v-text-field>
         </v-flex>
         <v-btn v-on:click="getResult()" normal>Go!</v-btn>
-          <div class="text-xs-center">
-            <v-menu offset-y>
-              <v-btn color="primary" dark slot="activator">URL</v-btn>
-              <v-list>
-                <v-list-tile v-for="mode in modes" :key="mode.title">
-                  <v-list-tile-title v-on:click="changeMode(mode.path)">{{ mode.title }}</v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-menu>
-          </div>
       </v-layout>
       <p>{{ result }}</p>
     </v-container>
@@ -34,16 +24,12 @@
 import axios from 'axios'
 
 export default {
-  name: 'HelloWorld',
+  name: 'CheckText',
   data () {
     return {
       msg: 'Fake News Checker',
       url: '',
-      result: '',
-      modes: [
-        {title: 'URL', path: 'home'},
-        {title: 'Text', path: 'checktext'}
-      ]
+      result: ''
     }
   },
   methods: {
@@ -53,9 +39,6 @@ export default {
         .then((data) => {
           this.result = `${this.url} is: ${data.data['message'][0]}`
         })
-    },
-    changeMode (path) {
-      this.$router.push(path)
     }
   }
 }

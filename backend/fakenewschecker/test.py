@@ -9,7 +9,7 @@ class FakeNewsCheckerTestCase(unittest.TestCase):
     def test_result(self):
         response = self.app.get('/checknews/?article=http://flask.pocoo.org/docs/0.12/reqcontext/')
         data = json.loads(response.data.decode())
-        self.assertEqual(data['message'], "FAKE!")
+        self.assertEqual(data['message'], "FAKE")
 
 if __name__ == "__main__":
     unittest.main()
