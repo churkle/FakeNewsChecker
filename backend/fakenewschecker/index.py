@@ -26,12 +26,12 @@ def strip_tags(html):
     return s.get_data()
 
 def run_model(text):
-    f1 = open("./tfidf_vectorizer.pckl","rb")
+    f1 = open("../tfidf_vectorizer.pckl","rb")
     tfidf_vectorizer = pickle.load(f1)
     v = tfidf_vectorizer.transform([text]) #vectorized string
     print(v)
 
-    f2 = open("./PAC_model.pckl","rb")
+    f2 = open("../PAC_model.pckl","rb")
     model = pickle.load(f2)
     pred = model.predict(v)
     f1.close()
