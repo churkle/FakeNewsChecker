@@ -10,6 +10,8 @@ sklearn = "*"
 scipy = "*"
 flask-cors = "*"
 requests = "*"
+"beautifulsoup4" = "*"
+lxml = "*"
 
 [dev-packages]
 

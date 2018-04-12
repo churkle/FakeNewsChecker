@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
+from bs4 import BeautifulSoup
 from html.parser import HTMLParser
 import requests
 import pickle
@@ -25,12 +26,12 @@ def strip_tags(html):
     return s.get_data()
 
 def run_model(text):
-    f1 = open("../tfidf_vectorizer.pckl","rb")
+    f1 = open("./tfidf_vectorizer.pckl","rb")
     tfidf_vectorizer = pickle.load(f1)
     v = tfidf_vectorizer.transform([text]) #vectorized string
     print(v)
 
-    f2 = open("../PAC_model.pckl","rb")
+    f2 = open("./PAC_model.pckl","rb")
     model = pickle.load(f2)
     pred = model.predict(v)
     f1.close()
@@ -46,8 +47,16 @@ def fake_news_checker():
     if not url:
         return jsonify({'message': 'No input data provided'}), 400
 
-    body = strip_tags(requests.get(url).text).replace('\n', '')
-    pred = run_model(body)
+    rawtext = requests.get(url).text
+    soup = BeautifulSoup(rawtext, 'lxml')
+    body = soup.find_all('p')
+    
+    article = ''
+    for paragraph in body:
+        stripped_text = paragraph.get_text(' ', strip = True)
+        article = article + '\n' + stripped_text
+
+    pred = run_model(article)
 
     response = jsonify({'status': 'success',
                     'message': pred.tolist()})
