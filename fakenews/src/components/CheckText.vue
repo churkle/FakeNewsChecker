@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="checktext">
     <h1>{{ msg }}</h1>
     <v-container fluid>
       <v-layout row>
@@ -7,15 +7,16 @@
         </v-flex>
         <v-flex xs6>
           <v-text-field
-              name="urlTextField"
-              label="URL"
-              id="urlTextField"
-              v-model="url"
+              name="articleTextField"
+              label="Paste article here"
+              id="articleTextField"
+              v-model="article"
+              multi-line
           ></v-text-field>
         </v-flex>
         <v-btn v-on:click="getResult()" normal>Go!</v-btn>
         <div class="text-xs-center">
-          <v-btn v-on:click="changeMode()" normal>Check Text</v-btn>
+          <v-btn v-on:click="changeMode()" normal>Check URL</v-btn>
         </div>
       </v-layout>
       <p>{{ result }}</p>
@@ -27,24 +28,26 @@
 import axios from 'axios'
 
 export default {
-  name: 'HelloWorld',
+  name: 'CheckText',
   data () {
     return {
       msg: 'Fake News Checker',
-      url: '',
+      article: '',
       result: ''
     }
   },
   methods: {
     getResult () {
       this.result = 'Checking... please wait'
-      axios.get('http://34.229.13.101:5000/checknews?article=' + this.url)
+      axios.post('http://34.229.13.101:5000/checktext', {
+        text: this.article
+      })
         .then((data) => {
-          this.result = `${this.url} is: ${data.data['message'][0]}`
+          this.result = `Article is: ${data.data['message'][0]}`
         })
     },
     changeMode () {
-      this.$router.push('checktext')
+      this.$router.push('/')
     }
   }
 }
